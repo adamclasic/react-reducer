@@ -3,45 +3,38 @@ import React, {useState, useReducer, useEffect, createContext} from 'react'
 import Formm from './components/form'
 import List from './components/list'
 
-const connect = async () => {
-  let data = await fetch('https://api.github.com/users')
-  let jdata = await data.json()
-  return jdata
-
-}
+const NumberContext = React.createContext();
 
 function App() {
   const reducer = (state, action) => {
+    state = {...state}
     if (action === 'add') {
-      let returned = state + 1 
-      return returned
+      state.peopol = state.peopol + 1 
+      console.log(state);
+      return state
     }
 
     if (action === 'down') {
-      return state - 1 
+      state = {...state}
+      state.peopol = state.peopol - 1 
+      console.log(state);
+      return state
     }
     
     return state
   }
 
-  useEffect(() => {
-    
-    return () => {
-      state.peopol = connect();
-    }
-  }, [])
   const [name, setName] = useState('')
-  const [state, dispatch] = useReducer(reducer, {peopol: []})
+  const [state, dispatch] = useReducer(reducer, {peopol: 0})
 
   return (
     <div className="App">
-      <Formm />
-      <List />
-      <h3>{state.peopol}</h3>
-      {/* <button onClick={() => {dispatch('add')}}>add</button> */}
-      {/* <button onClick={() => {dispatch('down')}}>down</button> */}
+      <NumberContext.Provider value={{state: state, dispatch: dispatch}}>
+        <Formm />
+        <List />
+      </NumberContext.Provider>
     </div>
   );
 }
 
-export default App;
+export {App, NumberContext};

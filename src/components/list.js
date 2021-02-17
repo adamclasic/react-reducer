@@ -1,22 +1,24 @@
-import React from 'react'
-
+import React, {useContext} from 'react'
+import {NumberContext} from '../App'
 export const Item = () => {
   return (
     <li>
-      hey 1
     </li>
   )
 }
-
-
-const list = () => {
+const List = () => {
+  
+  const context = useContext(NumberContext)
+  let state = context
+  console.log(state);
   return (
     <div>
       <ul>
         <Item />
       </ul>
+    <h3>{state.peopol}</h3>
     </div>
   )
 }
 
-export default list
+export default List
