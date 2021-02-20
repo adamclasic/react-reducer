@@ -1,25 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {useState, useReducer, useEffect, createContext} from 'react'
+import Formm from './components/form'
+import List from './components/list'
+
+const NumberContext = React.createContext();
 
 function App() {
+  const reducer = (state, action) => {
+    state = {...state}
+    if (action === 'add') {
+      state.peopol = state.peopol + 1 
+      console.log(state);
+      return state
+    }
+
+    if (action === 'down') {
+      state = {...state}
+      state.peopol = state.peopol - 1 
+      console.log(state);
+      return state
+    }
+    
+    return state
+  }
+
+  const [name, setName] = useState('')
+  const [state, dispatch] = useReducer(reducer, {peopol: 0})
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NumberContext.Provider value={{state: state, dispatch: dispatch}}>
+        <Formm />
+        <List />
+      </NumberContext.Provider>
     </div>
   );
 }
 
-export default App;
+export {App, NumberContext};
